@@ -1,13 +1,13 @@
 {
- "generets": "2026-10-21T21:39:58Z",
+ "generets": "2026-10-21T21:41:57Z",
  "repos": [
   {
    "name": "Argent0rum.github.io",
    "description": "Visi mani projekti vienā vietā",
    "homepage": null,
-   "has_pages": false,
+   "has_pages": true,
    "fork": false,
-   "pushed_at": "2026-10-21T21:36:35Z",
+   "pushed_at": "2026-10-21T21:41:18Z",
    "created_at": "2026-10-21T21:36:34Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/Argent0rum.github.io"
