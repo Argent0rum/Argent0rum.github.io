@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Argent0rum projekti</title>
+<meta name="description" content="Visas manas vietnes un projekti vienā vietā: ekonomikas dati, kursa darba materiāli un interaktīvi ekonomikas grafiki.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="preload" href="dati/repos.json" as="fetch" crossorigin>
+<style>
+/* Layout: a catalogue of project cards under a short masthead; filters by tag; one column on phones. */
+:root {
+  --paper: #EDF0F3;
+  --card: #FFFFFF;
+  --ink: #15202A;
+  --muted: #5B6875;
+  --line: #D5DBE1;
+  --accent: #9E3039;     /* Latvian carmine */
+  --accent-soft: #F4E3E5;
+  --chip: #E2E7EC;
+  --shadow: 0 1px 2px rgba(21,32,42,.06), 0 6px 20px rgba(21,32,42,.06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0F151B; --card: #18212A; --ink: #E5EBF0; --muted: #94A2AF; --line: #27333E;
+    --accent: #E2737B; --accent-soft: #3A2226; --chip: #222D37;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 16px/1.55 var(--f-body);
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.wrap {
+  max-width: 1160px; margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+header.mast { padding-block: 48px 28px; }
+.topline { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.handle { font: 500 13px/1 var(--f-mono); color: var(--muted); letter-spacing: .02em; }
+.handle b { color: var(--accent); font-weight: 500; }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; background: var(--card); }
+.lang button {
+  border: 0; background: transparent; color: var(--muted); font: 600 12px/1 var(--f-body);
+  padding: 7px 11px; border-radius: 999px; cursor: pointer; letter-spacing: .04em;
+}
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+h1 {
+  font: 800 clamp(44px, 8vw, 84px)/.95 var(--f-display); letter-spacing: -.02em;
+  margin: 26px 0 14px; text-wrap: balance;
+}
+h1 .dot { color: var(--accent); }
+.lede { max-width: 60ch; color: var(--muted); margin: 0; font-size: 17px; }
+.stats { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px 22px; font: 400 13px/1.4 var(--f-mono); color: var(--muted); }
+.stats strong { color: var(--ink); font-weight: 500; }
+
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-block: 6px 22px; border-top: 1px solid var(--line); padding-top: 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 auto; min-width: 0; }
+.chip {
+  border: 1px solid transparent; background: var(--chip); color: var(--ink);
+  font: 500 13px/1 var(--f-body); padding: 8px 12px; border-radius: 999px; cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.search {
+  flex: 0 1 240px; min-width: 0; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  font: 400 14px/1 var(--f-body); padding: 9px 12px; border-radius: 10px;
+}
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding-bottom: 40px; }
+.card {
+  position: relative; display: flex; flex-direction: column; background: var(--card);
+  border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(21,32,42,.08), 0 14px 32px rgba(21,32,42,.12); }
+.thumb { aspect-ratio: 16 / 10; max-width: 100%; background: var(--chip); border-bottom: 1px solid var(--line); overflow: hidden; position: relative; }
+.thumb img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+.thumb .ph {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font: 800 54px/1 var(--f-display); color: rgba(255,255,255,.92); letter-spacing: -.03em;
+}
+.badge {
+  position: absolute; z-index: 2; top: 10px; left: 10px; background: var(--accent); color: #fff;
+  font: 600 11px/1 var(--f-body); letter-spacing: .06em; text-transform: uppercase; padding: 6px 8px; border-radius: 6px;
+}
+.body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
+.card h2 { font: 600 21px/1.2 var(--f-display); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+.card h2 a { text-decoration: none; }
+.card h2 a::after { content: ""; position: absolute; inset: 0; } /* whole card opens the site */
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.auto { align-self: flex-start; font: 500 12.5px/1 var(--f-body); color: var(--accent); background: var(--accent-soft); padding: 6px 9px; border-radius: 6px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font: 500 12px/1 var(--f-mono); color: var(--muted); background: var(--chip); padding: 5px 8px; border-radius: 6px; }
+.foot {
+  margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--line);
+  display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+  font: 400 12.5px/1.3 var(--f-mono); color: var(--muted);
+}
+.links { display: flex; gap: 14px; position: relative; z-index: 1; }
+.links a { font: 600 13.5px/1 var(--f-body); text-decoration: none; }
+.links a.open { color: var(--accent); }
+.links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.empty { padding: 40px 0; color: var(--muted); }
+footer { border-top: 1px solid var(--line); padding-block: 20px 36px; font-size: 13.5px; color: var(--muted); }
+footer p { margin: 0; max-width: 72ch; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+@media (max-width: 520px) {
+  header.mast { padding-block: 28px 20px; }
+  .grid { grid-template-columns: 1fr; gap: 16px; }
+  .search { flex: 1 1 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .card, .card:hover { transition: none; transform: none; } }
+</style>
+</head>
+<body>
+<header class="mast wrap">
+  <div class="topline">
+    <span class="handle"><b>●</b> argent0rum.github.io</span>
+    <div class="lang" role="group" aria-label="Valoda / Language">
+      <button type="button" id="lang-lv" data-lang="lv">LV</button>
+      <button type="button" id="lang-en" data-lang="en">EN</button>
+    </div>
+  </div>
+  <h1 data-t="title">Projekti<span class="dot">.</span></h1>
+  <p class="lede" data-t="lede"></p>
+  <div class="stats" id="stats" aria-live="polite"></div>
+</header>
+
+<main class="wrap">
+  <div class="tools">
+    <div class="chips" id="chips" role="group"></div>
+    <label class="sr" for="q" data-t="search"></label>
+    <input class="search" id="q" type="search" autocomplete="off">
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer class="wrap"><p data-t="foot"></p></footer>
+
+<script>
+(() => {
+  const USER = "Argent0rum";
+  const HUB = (USER + ".github.io").toLowerCase();
+  const T = {
+    lv: {
+      title: 'Projekti<span class="dot">.</span>',
+      lede: "Visas manas vietnes vienā vietā: ekonomikas dati, kursa darba materiāli un interaktīvi grafiki. Katra jauna vietne šeit parādās pati.",
+      search: "Meklēt", searchPh: "Meklēt projektu…", all: "Visi",
+      sites: n => n === 1 ? "1 vietne" : n + " vietnes",
+      lastChange: "pēdējās izmaiņas", checked: "saraksts pārbaudīts",
+      open: "Atvērt", code: "Kods", updated: "atjaunināts", isNew: "Jauns",
+      auto: { "dienā": "dati atjaunojas katru dienu", "mēnesī": "dati atjaunojas katru mēnesi" },
+      noDesc: "Apraksts vēl nav pievienots.",
+      none: "Nekas neatbilst meklētajam.",
+      ago: d => d <= 0 ? "šodien" : d === 1 ? "vakar" : d < 30 ? `pirms ${d} d.` : d < 365 ? `pirms ${Math.round(d / 30)} mēn.` : `pirms ${Math.round(d / 365)} g.`,
+      foot: "Saraksts tiek ņemts no GitHub: katra repozitorija vietne, kurai ieslēgts GitHub Pages, parādās šeit automātiski. Nosaukumus un aprakstus var mainīt failā projekti.json."
+    },
+    en: {
+      title: 'Projects<span class="dot">.</span>',
+      lede: "All my sites in one place: economic data, term paper material and interactive graphs. Every new site shows up here on its own.",
+      search: "Search", searchPh: "Search projects…", all: "All",
+      sites: n => n === 1 ? "1 site" : n + " sites",
+      lastChange: "last change", checked: "list checked",
+      open: "Open", code: "Code", updated: "updated", isNew: "New",
+      auto: { "dienā": "data updates daily", "mēnesī": "data updates monthly" },
+      noDesc: "No description yet.",
+      none: "Nothing matches your search.",
+      ago: d => d <= 0 ? "today" : d === 1 ? "yesterday" : d < 30 ? `${d} days ago` : d < 365 ? `${Math.round(d / 30)} mo ago` : `${Math.round(d / 365)} y ago`,
+      foot: "The list comes from GitHub: every repository with GitHub Pages switched on shows up here automatically. Names and descriptions can be changed in projekti.json."
+    }
+  };
+  const TAG_EN = { "dati": "data", "Baltija": "Baltics", "kursa darbs": "term paper", "mācības": "study", "interaktīvs": "interactive" };
+  const PALETTE = ["#9E3039", "#2F5D8A", "#3E7C59", "#7A4E9C", "#B8742A", "#1F7A80"];
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+  let lang = store.get("hub.lang") || "lv";
+  let tagFilter = null, query = "";
+  let cfg = { slept: [], projekti: [] }, repos = null, checkedAt = null;
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const days = iso => iso ? Math.floor((Date.now() - new Date(iso).getTime()) / 864e5) : null;
+  const fmtDate = iso => iso ? new Date(iso).toLocaleDateString(lang === "lv" ? "lv-LV" : "en-GB", { day: "numeric", month: "short", year: "numeric" }) : "";
+  const hash = s => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const pagesUrl = name => name.toLowerCase() === HUB ? `https://${HUB}/` : `https://${USER.toLowerCase()}.github.io/${name}/`;
+  const prettify = name => name.replace(/[-_]+/g, " ").replace(/^\w/, c => c.toUpperCase());
+
+  function build() {
+    const hidden = new Set((cfg.slept || []).map(s => s.toLowerCase()));
+    const known = new Map((cfg.projekti || []).filter(p => p.repo).map(p => [p.repo.toLowerCase(), p]));
+    const out = [], seen = new Set();
+    if (repos) {
+      for (const r of repos) {
+        const key = r.name.toLowerCase();
+        if (r.fork || !r.has_pages || hidden.has(key)) continue;
+        seen.add(key);
+        out.push(entry(known.get(key) || {}, r));
+      }
+    }
+    for (const p of cfg.projekti || []) {
+      const key = (p.repo || p.url || "").toLowerCase();
+      if (seen.has(key) || hidden.has(key)) continue;
+      if (p.repo && repos && !p.url) continue;   // repo exists in config but has no Pages site (yet)
+      out.push(entry(p, null));
+    }
+    out.sort((a, b) => (b.pushed || "").localeCompare(a.pushed || ""));
+    return out;
+  }
+  function entry(p, r) {
+    const name = p.repo || (r && r.name) || "";
+    const L = p[lang] || p.lv || {};
+    return {
+      key: name || p.url,
+      title: L.nosaukums || (r && prettify(r.name)) || name,
+      desc: L.apraksts || (r && r.description) || "",
+      tags: p.birkas || (r && r.topics) || [],
+      url: p.url || (r && r.homepage) || pagesUrl(name),
+      code: r ? r.html_url : (p.repo ? `https://github.com/${USER}/${p.repo}` : null),
+      img: name ? `atteli/${name}.jpg` : null,
+      pushed: r ? r.pushed_at : null,
+      created: r ? r.created_at : null,
+      auto: p.atjauno || null
+    };
+  }
+
+  function render() {
+    const t = T[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-t]").forEach(el => {
+      const v = t[el.dataset.t]; if (typeof v === "string") el.innerHTML = v;
+    });
+    $("q").placeholder = t.searchPh;
+    $("lang-lv").setAttribute("aria-pressed", lang === "lv");
+    $("lang-en").setAttribute("aria-pressed", lang === "en");
+
+    const all = build();
+    const tags = [...new Set(all.flatMap(e => e.tags))];
+    if (tagFilter && !tags.includes(tagFilter)) tagFilter = null;
+    const tagLabel = tg => lang === "en" ? (TAG_EN[tg] || tg) : tg;
+    $("chips").innerHTML = [`<button type="button" class="chip" data-tag="" aria-pressed="${!tagFilter}">${t.all}</button>`]
+      .concat(tags.map(tg => `<button type="button" class="chip" data-tag="${esc(tg)}" aria-pressed="${tagFilter === tg}">${esc(tagLabel(tg))}</button>`)).join("");
+
+    const q = query.trim().toLowerCase();
+    const shown = all.filter(e => (!tagFilter || e.tags.includes(tagFilter)) &&
+      (!q || [e.title, e.desc, e.key, ...e.tags.map(tagLabel)].join(" ").toLowerCase().includes(q)));
+
+    const latest = all.map(e => e.pushed).filter(Boolean).sort().pop();
+    $("stats").innerHTML = [
+      `<span><strong>${t.sites(all.length)}</strong></span>`,
+      latest ? `<span>${t.lastChange}: <strong>${fmtDate(latest)}</strong></span>` : "",
+      checkedAt ? `<span>${t.checked}: ${fmtDate(checkedAt)}</span>` : ""
+    ].join("");
+
+    const fresh = e => e.created && days(e.created) <= 7;
+    const flagNew = !all.every(fresh);   // when everything is new (e.g. right after setup) no badge is shown
+    $("grid").innerHTML = shown.length ? shown.map(e => {
+      const d = days(e.pushed), isNew = flagNew && fresh(e);
+      const color = PALETTE[hash(e.key) % PALETTE.length];
+      const initials = e.title.split(/\s+/).slice(0, 2).map(w => w[0] || "").join("").toUpperCase();
+      return `<article class="card">
+        <div class="thumb" style="background:${color}">
+          <span class="ph" aria-hidden="true">${esc(initials)}</span>
+          ${e.img ? `<img src="${esc(e.img)}" alt="" loading="lazy" onerror="this.remove()">` : ""}
+          ${isNew ? `<span class="badge">${t.isNew}</span>` : ""}
+        </div>
+        <div class="body">
+          <h2><a href="${esc(e.url)}">${esc(e.title)}</a></h2>
+          <p>${esc(e.desc || t.noDesc)}</p>
+          ${e.auto && t.auto[e.auto] ? `<span class="auto">↻ ${t.auto[e.auto]}</span>` : ""}
+          ${e.tags.length ? `<div class="tags">${e.tags.map(tg => `<span class="tag">${esc(tagLabel(tg))}</span>`).join("")}</div>` : ""}
+          <div class="foot">
+            <span>${d !== null ? `${t.updated} ${t.ago(d)}` : ""}</span>
+            <span class="links"><a class="open" href="${esc(e.url)}">${t.open} →</a>${e.code ? `<a href="${esc(e.code)}">${t.code}</a>` : ""}</span>
+          </div>
+        </div>
+      </article>`;
+    }).join("") : `<p class="empty">${t.none}</p>`;
+  }
+
+  // Events
+  document.querySelector(".lang").addEventListener("click", ev => {
+    const b = ev.target.closest("button[data-lang]"); if (!b) return;
+    lang = b.dataset.lang; store.set("hub.lang", lang); render();
+  });
+  $("chips").addEventListener("click", ev => {
+    const b = ev.target.closest(".chip"); if (!b) return;
+    tagFilter = b.dataset.tag || null; render();
+  });
+  $("q").addEventListener("input", ev => { query = ev.target.value; render(); });
+
+  // Data: config + nightly snapshot first (fast), then a live check with GitHub for brand-new sites.
+  const slim = list => list.map(r => ({ name: r.name, description: r.description, homepage: r.homepage, has_pages: r.has_pages,
+    fork: r.fork, pushed_at: r.pushed_at, created_at: r.created_at, topics: r.topics || [], html_url: r.html_url }));
+  const cached = store.get("hub.repos");
+  if (cached) { try { const c = JSON.parse(cached); repos = c.repos; checkedAt = c.at; } catch (e) {} }
+
+  Promise.all([
+    fetch("projekti.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch("dati/repos.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : null).catch(() => null)
+  ]).then(([c, snap]) => {
+    if (c) cfg = c;
+    if (snap && (!checkedAt || snap.generets > checkedAt)) { repos = snap.repos; checkedAt = snap.generets; }
+    render();
+    return fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=pushed`, { headers: { Accept: "application/vnd.github+json" } });
+  }).then(r => r && r.ok ? r.json() : null).then(list => {
+    if (!Array.isArray(list)) return;
+    repos = slim(list); checkedAt = new Date().toISOString();
+    store.set("hub.repos", JSON.stringify({ repos, at: checkedAt }));
+    render();
+  }).catch(() => {});
+
+  render();
+})();
+</script>
+</body>
+</html>

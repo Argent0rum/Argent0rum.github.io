@@ -1,0 +1,49 @@
+{
+ "generets": "2026-10-21T21:39:58Z",
+ "repos": [
+  {
+   "name": "Argent0rum.github.io",
+   "description": "Visi mani projekti vienā vietā",
+   "homepage": null,
+   "has_pages": false,
+   "fork": false,
+   "pushed_at": "2026-10-21T21:36:35Z",
+   "created_at": "2026-10-21T21:36:34Z",
+   "topics": [],
+   "html_url": "https://github.com/Argent0rum/Argent0rum.github.io"
+  },
+  {
+   "name": "latvijas-ekonomika",
+   "description": "Latvijas ekonomikas pārskats: galvenie rādītāji, automātiski atjaunināti no Eurostat",
+   "homepage": null,
+   "has_pages": true,
+   "fork": false,
+   "pushed_at": "2026-10-21T21:27:35Z",
+   "created_at": "2026-10-21T20:55:43Z",
+   "topics": [],
+   "html_url": "https://github.com/Argent0rum/latvijas-ekonomika"
+  },
+  {
+   "name": "aizsardzibas-izdevumi",
+   "description": "Aizsardzības izdevumi Eiropā 2000–šodien: dati, aprēķini un grafiki kursa darbam",
+   "homepage": null,
+   "has_pages": true,
+   "fork": false,
+   "pushed_at": "2026-10-21T20:41:00Z",
+   "created_at": "2026-10-21T20:33:04Z",
+   "topics": [],
+   "html_url": "https://github.com/Argent0rum/aizsardzibas-izdevumi"
+  },
+  {
+   "name": "econ-playground",
+   "description": null,
+   "homepage": null,
+   "has_pages": true,
+   "fork": false,
+   "pushed_at": "2026-10-21T20:24:15Z",
+   "created_at": "2026-10-21T19:36:27Z",
+   "topics": [],
+   "html_url": "https://github.com/Argent0rum/econ-playground"
+  }
+ ]
+}

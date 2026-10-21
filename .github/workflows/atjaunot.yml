@@ -1,0 +1,45 @@
+# Keeps the project list fresh: every day (and when projekti.json changes) it saves the current list of
+# repositories to dati/repos.json and makes a preview picture for any new site that doesn't have one yet.
+# Run it by hand: Actions → "Atjaunot projektu sarakstu" → Run workflow.
+name: Atjaunot projektu sarakstu
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 5 * * *"
+  push:
+    branches: [main]
+    paths: ["projekti.json", "scripts/atjaunot.py", ".github/workflows/atjaunot.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: atjaunot-sarakstu
+  cancel-in-progress: false
+
+jobs:
+  atjaunot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests pillow playwright
+      - name: Pārlūks attēliem
+        run: python -m playwright install --with-deps chromium
+      - name: Atjaunot sarakstu un attēlus
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/atjaunot.py
+      - name: Saglabāt
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dati atteli
+          if git diff --cached --quiet; then echo "Nav izmaiņu."; else
+            git commit -m "Projektu saraksts atjaunināts $(date -u +%Y-%m-%d)"
+            git pull --rebase
+            git push
+          fi
