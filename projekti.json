@@ -1,7 +1,25 @@
 {
   "_paskaidrojums": "Šeit raksti nosaukumu, aprakstu un birkas saviem projektiem. Jaunas GitHub vietnes parādās lapā automātiski arī bez ieraksta šeit (tad apraksts tiek ņemts no repozitorija apraksta). Lai paslēptu vietni, ieliec tās repozitorija nosaukumu sarakstā 'slept'.",
-  "slept": ["Argent0rum.github.io"],
+  "slept": [
+    "Argent0rum.github.io"
+  ],
   "projekti": [
+    {
+      "repo": "manga-tracker",
+      "lv": {
+        "nosaukums": "Next Chapter",
+        "apraksts": "Mans mangas, manhvu un manhua sekotājs: ~770 sēriju no MangaDex, Weeb Central un mgeko vienā vietā, jaunas nodaļas tiek atrastas automātiski ik pēc 2 stundām, ar saiti uz lasīšanu."
+      },
+      "en": {
+        "nosaukums": "Next Chapter",
+        "apraksts": "My manga, manhwa and manhua tracker: ~770 series from MangaDex, Weeb Central and mgeko in one place, with new chapters found automatically every 2 hours and a link straight to reading."
+      },
+      "birkas": [
+        "hobiji",
+        "interaktīvs"
+      ],
+      "atjauno": "dienā"
+    },
     {
       "repo": "latvijas-ekonomika",
       "lv": {
@@ -12,7 +30,11 @@
         "nosaukums": "Economy in numbers",
         "apraksts": "29 Eurostat indicators for Latvia, Lithuania, Estonia and the EU average: GDP, inflation, unemployment, wages, public debt and more. Compare with any year and open a history chart for any indicator."
       },
-      "birkas": ["dati", "Eurostat", "Baltija"],
+      "birkas": [
+        "dati",
+        "Eurostat",
+        "Baltija"
+      ],
       "atjauno": "dienā"
     },
     {
@@ -25,7 +47,11 @@
         "nosaukums": "Defence spending in Europe",
         "apraksts": "Defence spending of European countries since 2000, built for the term paper: 8 charts, an Excel workbook and the key figures for the Baltic states."
       },
-      "birkas": ["kursa darbs", "dati", "NATO"],
+      "birkas": [
+        "kursa darbs",
+        "dati",
+        "NATO"
+      ],
       "atjauno": "mēnesī"
     },
     {
@@ -38,7 +64,10 @@
         "nosaukums": "Econ Playground",
         "apraksts": "12 economics topics built around interactive graphs: supply and demand, elasticity, monopoly, IS-LM, AD-AS and more. Move the inputs and watch the equilibrium change."
       },
-      "birkas": ["mācības", "interaktīvs"]
+      "birkas": [
+        "mācības",
+        "interaktīvs"
+      ]
     }
   ]
 }
