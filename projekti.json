@@ -58,11 +58,11 @@
       "repo": "econ-playground",
       "lv": {
         "nosaukums": "Econ Playground",
-        "apraksts": "12 ekonomikas tēmas ar interaktīviem grafikiem: piedāvājums un pieprasījums, elastība, monopols, IS-LM, AD-AS un citas. Maini parametrus un redzi, kā mainās līdzsvars. Lapa angļu valodā."
+        "apraksts": "18 ekonomikas un statistikas tēmas ar interaktīviem grafikiem: piedāvājums un pieprasījums, IS-LM, AD-AS, ticamības intervāli, hipotēžu testi, regresija, fiksētie efekti un cenu indeksi. Lapa angļu valodā."
       },
       "en": {
         "nosaukums": "Econ Playground",
-        "apraksts": "12 economics topics built around interactive graphs: supply and demand, elasticity, monopoly, IS-LM, AD-AS and more. Move the inputs and watch the equilibrium change."
+        "apraksts": "18 economics and statistics topics built around interactive graphs: supply and demand, IS-LM, AD-AS, confidence intervals, hypothesis tests, regression, fixed effects and price indices."
       },
       "birkas": [
         "mācības",
