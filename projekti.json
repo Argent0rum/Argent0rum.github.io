@@ -8,11 +8,11 @@
       "repo": "manga-tracker",
       "lv": {
         "nosaukums": "Next Chapter",
-        "apraksts": "Mans mangas, manhvu un manhua sekotājs: ~770 sēriju no MangaDex, Weeb Central un mgeko vienā vietā, jaunas nodaļas tiek atrastas automātiski ik pēc 2 stundām, ar saiti uz lasīšanu."
+        "apraksts": "Mans mangas, manhvu un manhua sekotājs: ~770 sēriju no MangaDex, Weeb Central un mgeko vienā vietā, jaunas nodaļas ik pēc 2 stundām, progresa sinhronizācija no lasīšanas vietnēm un meklēšana pēc līdzīga darba vai noskaņas."
       },
       "en": {
         "nosaukums": "Next Chapter",
-        "apraksts": "My manga, manhwa and manhua tracker: ~770 series from MangaDex, Weeb Central and mgeko in one place, with new chapters found automatically every 2 hours and a link straight to reading."
+        "apraksts": "My manga, manhwa and manhua tracker: ~770 series from MangaDex, Weeb Central and mgeko in one place, new chapters every 2 hours, progress sync from the reading sites, and search by \"something like X\" or a mood."
       },
       "birkas": [
         "hobiji",
