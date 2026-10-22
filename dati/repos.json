@@ -1,5 +1,5 @@
 {
- "generets": "2026-10-22T06:08:02Z",
+ "generets": "2026-10-22T09:53:42Z",
  "repos": [
   {
    "name": "Argent0rum.github.io",
@@ -7,10 +7,21 @@
    "homepage": null,
    "has_pages": true,
    "fork": false,
-   "pushed_at": "2026-10-21T21:41:58Z",
+   "pushed_at": "2026-10-22T09:53:08Z",
    "created_at": "2026-10-21T21:36:34Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/Argent0rum.github.io"
+  },
+  {
+   "name": "manga-tracker",
+   "description": "One place for all the manga I follow: new chapters, progress and links",
+   "homepage": null,
+   "has_pages": true,
+   "fork": false,
+   "pushed_at": "2026-10-22T09:52:21Z",
+   "created_at": "2026-10-22T09:19:52Z",
+   "topics": [],
+   "html_url": "https://github.com/Argent0rum/manga-tracker"
   },
   {
    "name": "latvijas-ekonomika",
