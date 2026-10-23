@@ -1,16 +1,16 @@
 {
- "generets": "2026-10-22T17:33:19Z",
+ "generets": "2026-10-23T06:12:55Z",
  "repos": [
   {
-   "name": "Argent0rum.github.io",
-   "description": "Visi mani projekti vienā vietā",
+   "name": "latvijas-ekonomika",
+   "description": "Latvijas ekonomikas pārskats: galvenie rādītāji, automātiski atjaunināti no Eurostat",
    "homepage": null,
    "has_pages": true,
    "fork": false,
-   "pushed_at": "2026-10-22T17:32:45Z",
-   "created_at": "2026-10-21T21:36:34Z",
+   "pushed_at": "2026-10-23T05:52:51Z",
+   "created_at": "2026-10-21T20:55:43Z",
    "topics": [],
-   "html_url": "https://github.com/Argent0rum/Argent0rum.github.io"
+   "html_url": "https://github.com/Argent0rum/latvijas-ekonomika"
   },
   {
    "name": "manga-tracker",
@@ -18,10 +18,21 @@
    "homepage": null,
    "has_pages": true,
    "fork": false,
-   "pushed_at": "2026-10-22T17:30:17Z",
+   "pushed_at": "2026-10-23T04:38:46Z",
    "created_at": "2026-10-22T09:19:52Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/manga-tracker"
+  },
+  {
+   "name": "Argent0rum.github.io",
+   "description": "Visi mani projekti vienā vietā",
+   "homepage": null,
+   "has_pages": true,
+   "fork": false,
+   "pushed_at": "2026-10-22T17:33:20Z",
+   "created_at": "2026-10-21T21:36:34Z",
+   "topics": [],
+   "html_url": "https://github.com/Argent0rum/Argent0rum.github.io"
   },
   {
    "name": "econ-playground",
@@ -44,17 +55,6 @@
    "created_at": "2026-10-21T20:33:04Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/aizsardzibas-izdevumi"
-  },
-  {
-   "name": "latvijas-ekonomika",
-   "description": "Latvijas ekonomikas pārskats: galvenie rādītāji, automātiski atjaunināti no Eurostat",
-   "homepage": null,
-   "has_pages": true,
-   "fork": false,
-   "pushed_at": "2026-10-21T21:27:35Z",
-   "created_at": "2026-10-21T20:55:43Z",
-   "topics": [],
-   "html_url": "https://github.com/Argent0rum/latvijas-ekonomika"
   }
  ]
 }
