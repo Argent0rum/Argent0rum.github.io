@@ -1,13 +1,24 @@
 {
- "generets": "2026-10-24T06:02:25Z",
+ "generets": "2026-10-25T06:04:39Z",
  "repos": [
+  {
+   "name": "latvijas-ekonomika",
+   "description": "Latvijas ekonomikas pārskats: galvenie rādītāji, automātiski atjaunināti no Eurostat",
+   "homepage": null,
+   "has_pages": true,
+   "fork": false,
+   "pushed_at": "2026-10-25T05:49:49Z",
+   "created_at": "2026-10-21T20:55:43Z",
+   "topics": [],
+   "html_url": "https://github.com/Argent0rum/latvijas-ekonomika"
+  },
   {
    "name": "manga-tracker",
    "description": "One place for all the manga I follow: new chapters, progress and links",
    "homepage": null,
    "has_pages": true,
    "fork": false,
-   "pushed_at": "2026-10-24T04:36:52Z",
+   "pushed_at": "2026-10-25T04:38:14Z",
    "created_at": "2026-10-22T09:19:52Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/manga-tracker"
@@ -18,21 +29,10 @@
    "homepage": null,
    "has_pages": true,
    "fork": false,
-   "pushed_at": "2026-10-23T06:12:58Z",
+   "pushed_at": "2026-10-24T06:02:27Z",
    "created_at": "2026-10-21T21:36:34Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/Argent0rum.github.io"
-  },
-  {
-   "name": "latvijas-ekonomika",
-   "description": "Latvijas ekonomikas pārskats: galvenie rādītāji, automātiski atjaunināti no Eurostat",
-   "homepage": null,
-   "has_pages": true,
-   "fork": false,
-   "pushed_at": "2026-10-23T05:52:51Z",
-   "created_at": "2026-10-21T20:55:43Z",
-   "topics": [],
-   "html_url": "https://github.com/Argent0rum/latvijas-ekonomika"
   },
   {
    "name": "econ-playground",
