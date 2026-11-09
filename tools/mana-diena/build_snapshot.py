@@ -69,16 +69,18 @@ else:
 pm = load(os.path.join(DUMP, "planner/planner/main.json"))
 if isinstance(pm, dict) and pm.get("tasks"):
     tasks = [t for t in pm["tasks"] if t.get("title")]
-    def tinfo(t): return {"title": t.get("title"), "due": t.get("due") or "", "time": t.get("time") or "", "tag": t.get("tag") or "", "prio": bool(t.get("prio"))}
+    def tinfo(t): return {"title": t.get("title"), "due": t.get("due") or "", "start": t.get("start") or "", "time": t.get("time") or "", "tag": t.get("tag") or "", "prio": bool(t.get("prio"))}
     over, today, soon, nodate = [], [], [], []
     for t in tasks:
         sf = pdate(t.get("showFrom"))
         if sf and sf > TODAY: continue
         d = pdate(t.get("due"))
+        st = pdate(t.get("start")) if t.get("start") else None   # multi-day task: start..due
+        if st is None or d is None or st > d: st = d
         if d is None: nodate.append(t)
         elif d < TODAY: over.append(t)
-        elif d == TODAY: today.append(t)
-        elif (d - TODAY).days <= 7: soon.append(t)
+        elif st <= TODAY: today.append(t)
+        elif (st - TODAY).days <= 7: soon.append(t)
     key = lambda t: (t.get("due") or "9999", t.get("time") or "99")
     goals = [g for g in (pm.get("goals") or []) if not g.get("done")]
     snap["planner"] = {"overdue": [tinfo(t) for t in sorted(over, key=key)][:8], "today": [tinfo(t) for t in sorted(today, key=key)][:10],
