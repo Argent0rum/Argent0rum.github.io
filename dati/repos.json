@@ -1,13 +1,24 @@
 {
- "generets": "2026-11-09T06:37:55Z",
+ "generets": "2026-11-10T06:30:37Z",
  "repos": [
+  {
+   "name": "econ-playground",
+   "description": null,
+   "homepage": null,
+   "has_pages": true,
+   "fork": false,
+   "pushed_at": "2026-11-10T05:35:02Z",
+   "created_at": "2026-10-21T19:36:27Z",
+   "topics": [],
+   "html_url": "https://github.com/Argent0rum/econ-playground"
+  },
   {
    "name": "manga-tracker",
    "description": "One place for all the manga I follow: new chapters, progress and links",
    "homepage": null,
    "has_pages": true,
    "fork": false,
-   "pushed_at": "2026-11-09T05:10:19Z",
+   "pushed_at": "2026-11-10T04:59:17Z",
    "created_at": "2026-10-22T09:19:52Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/manga-tracker"
@@ -18,7 +29,7 @@
    "homepage": null,
    "has_pages": true,
    "fork": false,
-   "pushed_at": "2026-11-08T06:25:12Z",
+   "pushed_at": "2026-11-09T21:14:37Z",
    "created_at": "2026-10-21T21:36:34Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/Argent0rum.github.io"
@@ -55,17 +66,6 @@
    "created_at": "2026-10-21T20:33:04Z",
    "topics": [],
    "html_url": "https://github.com/Argent0rum/aizsardzibas-izdevumi"
-  },
-  {
-   "name": "econ-playground",
-   "description": null,
-   "homepage": null,
-   "has_pages": true,
-   "fork": false,
-   "pushed_at": "2026-10-31T17:34:31Z",
-   "created_at": "2026-10-21T19:36:27Z",
-   "topics": [],
-   "html_url": "https://github.com/Argent0rum/econ-playground"
   }
  ]
 }
