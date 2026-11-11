@@ -254,6 +254,7 @@ details summary { cursor: pointer; color: var(--muted); font-size: .85rem; }
 .mangrid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; margin-top: 6px; }
 .mangrid label { font-size: .76rem; color: var(--muted); display: flex; flex-direction: column; }
 .mangrid input { width: 100% !important; }
+.tmsheet td select[data-mset] { margin-bottom: 4px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -1548,7 +1549,9 @@ function tmMember(g, t, i) {
     m.pieces = tmTypical(g, c, m.wb, 5); m.gear = "typ"; const g0 = tmGearMods(m), F0 = tmFinal(m, g0);
     F0.DMG = g0.reduce((a, x) => a + (x.k === "DMG" && (!x.el || x.el === c.el) ? x.v : 0), 0);
     m.man = {}; for (const k of TM_MAN) m.man[k] = sl.man && sl.man[k] != null ? +sl.man[k] : F0[k] || 0;
-    m.gear = "manual"; m.pieces = []; m.gearNote = "Stats typed in by hand. Enter them as the character screen shows them, without team buffs."; return m; }
+    const ps = k => (m.pieces[k] && m.pieces[k].set) || "", ms = sl.msets || {};
+    m.msets = { a: ms.a != null ? ms.a : ps(0), b: ms.b != null ? ms.b : ps(2), p: g === "hsr" ? (ms.p != null ? ms.p : ps(4)) : "" };
+    m.gear = "manual"; m.pieces = []; m.gearNote = "Stats typed in by hand. Enter them as the character screen shows them, without team buffs. Pick the sets in the Sets row."; return m; }
   if (want === "mine") { const own = tmOwned(g, c); if (own.length) { pieces = GAME[g].slots.map(s => own.find(p => p.slot === s)).filter(Boolean); m.gearNote = "Equipped pieces from My gear (" + pieces.length + " of " + GAME[g].slots.length + ")"; } else want = "best"; }
   if (want === "best") { if (S.inv[g].length) { const o = optimize(g, c, S.inv[g], weightsFor(g, c, m.wb)); pieces = GAME[g].slots.map(s => o.chosen[s] && o.chosen[s].p).filter(Boolean); m.gearNote = "Best-fitting pieces from My gear (nothing is marked as equipped on this character)"; } else want = "typ"; }
   if (want === "typ" || !pieces) { m.rolls = Math.min(8, Math.max(0, sl.rolls == null ? 5 : +sl.rolls)); pieces = tmTypical(g, c, m.wb, m.rolls); m.gearNote = "Typical finished build: recommended main stats and sets, " + m.rolls + " good substat rolls per piece"; want = "typ"; }
@@ -1562,7 +1565,9 @@ function tmKey(s) {
 const TM_MAN = ["HP", "ATK", "DEF", "SPD", "EM", "CR", "CD", "ER", "DMG"], TM_MANP = new Set(["CR", "CD", "ER", "DMG"]);
 function tmGearMods(m) {
   const g = m.g, c = m.c, mods = [], sub = {};
-  if (m.gear === "manual") { m.sets = []; for (const k of TM_MAN) { const v = m.man[k] - (k === "DMG" ? 0 : m.base[k] || 0); if (v) mods.push({ k, el: k === "DMG" ? c.el : undefined, v, src: "Typed in by you (gear and other bonuses)" }); } return mods; }
+  if (m.gear === "manual") { const q = m.msets; m.sets = [];
+    if (q.a && q.a === q.b) m.sets.push({ name: q.a, n: 4 }); else { if (q.a) m.sets.push({ name: q.a, n: 2 }); if (q.b) m.sets.push({ name: q.b, n: 2 }); }
+    if (q.p) m.sets.push({ name: q.p, n: 2, planar: true }); for (const k of TM_MAN) { const v = m.man[k] - (k === "DMG" ? 0 : m.base[k] || 0); if (v) mods.push({ k, el: k === "DMG" ? c.el : undefined, v, src: "Typed in by you (gear and other bonuses)" }); } return mods; }
   const add = (s, v, src) => { if (!v) return; const [k, el] = tmKey(s); mods.push({ k, el, v, src }); };
   for (const p of m.pieces) { add(p.main, mainVal(g, p), p.slot + " main stat"); for (const x of p.subs || []) sub[x.s] = (sub[x.s] || 0) + x.v; }
   for (const [s, v] of Object.entries(sub)) add(s, v, "Substats on all pieces");
@@ -1836,7 +1841,8 @@ function renderTeam() {
       <tr><th scope="row">${W}</th>${cell((m, i) => `<select data-f="w" data-i="${i}" aria-label="${W}">${g === "hsr" ? lcOptions(m.c, m.wid) : wpnOptions(m.c, m.wid)}</select><select data-f="rank" data-i="${i}" aria-label="${g === "hsr" ? "Superimposition" : "Refinement"}" class="mini">${[1, 2, 3, 4, 5].map(n => `<option value="${n}" ${m.rank === n ? "selected" : ""}>${g === "hsr" ? "S" : "R"}${n}</option>`).join("")}</select>`)}</tr>
       <tr><th scope="row">${E}</th>${cell((m, i) => `<select data-f="cons" data-i="${i}" aria-label="${E}" class="mini">${[0, 1, 2, 3, 4, 5, 6].map(n => `<option value="${n}" ${m.cons === n ? "selected" : ""}>${g === "hsr" ? "E" : "C"}${n}</option>`).join("")}</select>`)}</tr>
       <tr><th scope="row">Gear</th>${cell((m, i) => `<select data-f="gear" data-i="${i}" aria-label="Gear source"><option value="">Follow the mode above</option><option value="mine" ${m.sl.gear === "mine" ? "selected" : ""}>My equipped gear</option><option value="best" ${m.sl.gear === "best" ? "selected" : ""}>Best from My gear</option><option value="typ" ${m.sl.gear === "typ" ? "selected" : ""}>Typical build</option><option value="manual" ${m.sl.gear === "manual" ? "selected" : ""}>Type the stats myself</option></select>${m.gear === "manual" ? `<div class="mangrid">${TM_MAN.filter(k => g === "hsr" ? k !== "EM" : k !== "SPD").map(k => `<label>${({ CR: "CRIT Rate %", CD: "CRIT DMG %", ER: g === "hsr" ? "Energy Regen %" : "Energy Recharge %", DMG: m.c.el + " DMG %", EM: "Elem. Mastery" })[k] || k}<input type="number" step="any" data-man="${k}" data-i="${i}" value="${TM_MANP.has(k) ? +(m.man[k] * 100).toFixed(1) : +m.man[k].toFixed(k === "SPD" ? 1 : 0)}"></label>`).join("")}</div>` : ""}${m.gear === "typ" ? `<label class="mini-l">good rolls per piece <input type="number" min="0" max="8" step="0.5" value="${m.rolls}" data-f="rolls" data-i="${i}"></label>` : ""}<div class="note">${esc(m.gearNote)}</div>`)}</tr>
-      <tr><th scope="row">Sets</th>${cell(m => m.sets.length ? m.sets.map(s => `<div>${s.n}pc ${esc(s.name)}</div>`).join("") : m.gear === "manual" ? `<span class="muted">not used with typed stats. A set effect that only switches on in combat can be added under “Add your own” below.</span>` : `<span class="muted">no set bonus</span>`)}</tr>
+      <tr><th scope="row">Sets</th>${cell(m => m.gear !== "manual" && m.sets.length ? m.sets.map(s => `<div>${s.n}pc ${esc(s.name)}</div>`).join("") : m.gear === "manual" ? (() => { const d = S.data[g], rel = g === "hsr" ? d.relicSetNames : d.setNames, sel = (key, list, cur, lab) => `<select data-mset="${key}" data-i="${m.i}" aria-label="${lab}"><option value="">(none)</option>${list.map(n => `<option ${n === cur ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>`;
+        return sel("a", rel, m.msets.a, "First set") + sel("b", rel, m.msets.b, "Second set") + (g === "hsr" ? sel("p", d.planarSetNames, m.msets.p, "Planar set") : "") + `<div class="note">${m.sets.map(s => s.n + "pc " + esc(s.name)).join(" + ") || "no set bonus"}. Pick the same set twice for the 4-piece bonus. The plain stat part of a set is already in the stats you typed; its other effects are added as buffs.</div>`; })() : `<span class="muted">no set bonus</span>`)}</tr>
       ${g === "gi" ? `<tr><th scope="row">Reaction</th>${cell((m, i) => `<select data-f="react" data-i="${i}" aria-label="Reaction"><option value="none" ${m.react === "none" ? "selected" : ""}>None</option><option value="a15" ${m.react === "a15" ? "selected" : ""}>Vaporize / Melt ×1.5</option><option value="a20" ${m.react === "a20" ? "selected" : ""}>Vaporize / Melt ×2</option></select><label class="mini-l"><input type="checkbox" data-f="infuse" data-i="${i}" ${m.infused ? "checked" : ""}> normal attacks deal ${esc(m.c.el)} damage</label>`)}</tr>` : ""}
       <tr class="tmsec"><th colspan="5">Final stats, buffs included</th></tr>
       ${stat("HP", "HP")}${stat("ATK", "ATK")}${stat("DEF", "DEF")}${g === "hsr" ? stat("SPD", "SPD") : stat("EM", "Elemental Mastery")}${stat("CR", "CRIT Rate")}${stat("CD", "CRIT DMG")}${stat("ER", g === "hsr" ? "Energy Regen" : "Energy Recharge")}
@@ -1909,6 +1915,7 @@ function mountTeam() {
       else if (d.f === "infuse") sl.infuse = el.checked; else if (d.f === "gear") { if (el.value) sl.gear = el.value; else delete sl.gear; }
       else if (d.f === "rank" || d.f === "cons" || d.f === "rolls") sl[d.f] = +el.value; else sl[d.f] = el.value;
       redo(); }
+    else if (d.mset) { const sl = t.slots[+d.i]; sl.msets = sl.msets || {}; sl.msets[d.mset] = el.value; redo(); }
     else if (d.man) { const sl = t.slots[+d.i]; sl.man = sl.man || {}; if (el.value === "") delete sl.man[d.man]; else sl.man[d.man] = TM_MANP.has(d.man) ? +el.value / 100 : +el.value; redo(); }
     else if (d.t) { t[d.t] = el.type === "checkbox" ? el.checked : +el.value; redo(); }
     else if (d.b) { const o = t.buffs[d.id] = t.buffs[d.id] || {}; if (d.b === "on") o.on = el.checked; else if (d.b === "up") o.up = Math.min(1, Math.max(0, +el.value / 100)); else if (d.b === "tgt") o.tgt = +el.value; else if (d.b === "v") { if (d.id.startsWith("custom|")) t.custom[+d.id.slice(7)].v = d.flat === "1" ? +el.value : +el.value / 100; else o.v = d.flat === "1" ? +el.value : +el.value / 100; } redo(); }
